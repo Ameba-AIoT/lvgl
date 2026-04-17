@@ -453,7 +453,7 @@ static void prvCheckMutexInit(lv_mutex_t * pxMutex)
     if(pxMutex->xIsInitialized == pdFALSE) {
         /* Mutex initialization must be in a critical section to prevent two threads
          * from initializing it at the same time. */
-        _enter_critical();
+        vTaskSuspendAll();
 
         /* Check again that the mutex is still uninitialized, i.e. it wasn't
          * initialized while this function was waiting to enter the critical
@@ -463,7 +463,7 @@ static void prvCheckMutexInit(lv_mutex_t * pxMutex)
         }
 
         /* Exit the critical section. */
-        _exit_critical();
+        xTaskResumeAll();
     }
 }
 
@@ -504,7 +504,7 @@ static void prvCheckCondInit(lv_thread_sync_t * pxCond)
     if(pxCond->xIsInitialized == pdFALSE) {
         /* Cond initialization must be in a critical section to prevent two
          * threads from initializing it at the same time. */
-        _enter_critical();
+        vTaskSuspendAll();
 
         /* Check again that the condition is still uninitialized, i.e. it wasn't
          * initialized while this function was waiting to enter the critical
@@ -514,7 +514,7 @@ static void prvCheckCondInit(lv_thread_sync_t * pxCond)
         }
 
         /* Exit the critical section. */
-        _exit_critical();
+        xTaskResumeAll();
     }
 }
 
